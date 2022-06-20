@@ -27,9 +27,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
@@ -66,10 +63,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         // get data
         String message = chatsList.get(position).getMessage();
         String type = chatsList.get(position).getType();
+        String date = chatsList.get(position).getTimemessage();
 
-        // convert time stamp to dd//mm/YYYY hh:mm am/pm
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
-        String date = df.format(Calendar.getInstance().getTime());
 
         if(type.equals("text")){
             // text message
@@ -124,7 +119,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
         // set seen/delivered status of message
         if (position == chatsList.size() - 1) {
-            if (chatsList.get(position).isSeen()) {
+            if (chatsList.get(position).getIsSeen().equals("1")) {
                 holder.tvIsSeen.setText("Seen");
             } else {
                 holder.tvIsSeen.setText("Delivere");

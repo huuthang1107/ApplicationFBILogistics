@@ -25,6 +25,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.ActivityAddPostBinding;
 import com.example.demoapp.view.activity.LoginActivity;
@@ -43,6 +46,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -513,6 +519,52 @@ public class AddPostActivity extends AppCompatActivity {
                     });
 
         }
+    }
+
+    private void prepareNotification(String pId, String title, String description, String notificationType, String notificationTopic){
+        //prepare data for notification
+
+        String NOTIFICATION_TOPIC = "topics" + notificationTopic;
+        String NOTIFICATION_TITLE = title;
+        String NOTIFICATION_MESSAGE= description;
+        String NOTIFICATION_TYPE = notificationType;
+
+        //prepare json what to send, and where to send
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+        try{
+            //what to send
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            notificationBodyJo.put("sender", uid);
+            notificationBodyJo.put("pId", pId);
+            notificationBodyJo.put("pTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("pDescription", NOTIFICATION_MESSAGE);
+
+            //where to send
+            notificationJo.put("to", NOTIFICATION_TOPIC);
+            notificationJo.put("data", notificationBodyJo);
+        }catch (JSONException e){
+           Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        sendPostNotification(notificationJo);
+
+    }
+
+    private void sendPostNotification(JSONObject notificationJo) {
+        //send volley object request
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
     }
 
     // xử lý ảnh

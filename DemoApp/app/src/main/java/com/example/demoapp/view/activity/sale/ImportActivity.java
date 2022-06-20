@@ -176,7 +176,6 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
                         Import imports = ds.getValue(Import.class);
                         // get all users except currently signed is user
                         listPriceList.add(imports);
-                        Toast.makeText(ImportActivity.this, imports.getCarrier(),Toast.LENGTH_SHORT).show();
                     }
 
                 }

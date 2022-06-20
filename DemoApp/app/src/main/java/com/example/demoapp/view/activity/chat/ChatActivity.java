@@ -258,7 +258,7 @@ public class ChatActivity extends AppCompatActivity {
                     Chats chats = ds.getValue(Chats.class);
                     if (chats.getReceiver().equals(myUid) && chats.getSender().equals(hisUid)) {
                         HashMap<String, Object> hasSeenHashMap = new HashMap<>();
-                        hasSeenHashMap.put("isSeen", false);
+                        hasSeenHashMap.put("isSeen", "1");
                         ds.getRef().updateChildren(hasSeenHashMap);
                     }
                 }
@@ -449,6 +449,8 @@ public class ChatActivity extends AppCompatActivity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         String timestamp = String.valueOf(System.currentTimeMillis());
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
+        String date = df.format(Calendar.getInstance().getTime());
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", myUid);
         hashMap.put("receiver", hisUid);
@@ -456,6 +458,7 @@ public class ChatActivity extends AppCompatActivity {
         hashMap.put("timestamp", timestamp);
         hashMap.put("isSeen", "0");
         hashMap.put("type", "text");
+        hashMap.put("timemessage", date);
         databaseReference.child("Chats").push().setValue(hashMap);
 
 
@@ -526,6 +529,9 @@ public class ChatActivity extends AppCompatActivity {
 
         String fileNameAndPath = "ChatImages/"+"post_"+timeStamp;
 
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
+        String date = df.format(Calendar.getInstance().getTime());
+
         // Chat node will be created that will contain all images sent via chat
 
         // get bitmap from image uri
@@ -557,6 +563,7 @@ public class ChatActivity extends AppCompatActivity {
                             hashMap.put("timestamp", timeStamp);
                             hashMap.put("type", "image");
                             hashMap.put("isSeen", "0");
+                            hashMap.put("timemessage", date);
 
                             //put this data to firebase
                             databaseReference.child("Chats").push().setValue(hashMap);
