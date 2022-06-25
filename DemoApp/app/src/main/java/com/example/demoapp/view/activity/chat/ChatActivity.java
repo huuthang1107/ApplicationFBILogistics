@@ -468,7 +468,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Users users = snapshot.getValue(Users.class);
                 if (notify) {
-                    senNotification(hisUid, users.getName(), message);
+                    sendNotification(hisUid, users.getName(), message);
                 }
                 notify = false;
             }
@@ -575,7 +575,7 @@ public class ChatActivity extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     Users users = snapshot.getValue(Users.class);
                                     if(notify){
-                                        senNotification(hisUid, users.getName(),"Sent you a photo...");
+                                        sendNotification(hisUid, users.getName(),"Sent you a photo...");
                                     }
                                     notify = false;
                                 }
@@ -633,15 +633,20 @@ public class ChatActivity extends AppCompatActivity {
                 });
     }
 
-    private void senNotification(String hisUid, String name, String message) {
-        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("tokensNotification");
+    private void sendNotification(String hisUid, String name, String message) {
+        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = allTokens.orderByKey().equalTo(hisUid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(myUid, name + ": " + message, "New Message", hisUid, R.drawable.ic_face);
+                    Data data = new Data(""+myUid,
+                            ""+ name + ": " + message,
+                            "New Message",
+                            ""+hisUid,
+                            "ChatNotification",
+                            R.drawable.ic_notifications_black);
 
                     Sender sender = new Sender(data, token.getToken());
                     //fcm json object request
