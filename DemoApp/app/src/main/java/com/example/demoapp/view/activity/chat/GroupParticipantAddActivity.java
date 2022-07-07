@@ -61,13 +61,18 @@ public class GroupParticipantAddActivity extends AppCompatActivity {
                     Users users = ds.getValue(Users.class);
 
                     //get all user accept current ly signed in
-                    if(!firebaseAuth.getUid().equals(users.getUid())){
-                        // not my uid
-                        usersList.add(users);
-                    }
+                   try {
+                       if(!firebaseAuth.getUid().equals(users.getUid())){
+                           // not my uid
+                           usersList.add(users);
+                       }
+                   }catch (Exception e){
+
+                   }
                 }
                 //setup adapter
-                participantAddAdapter= new ParticipantAddAdapter(GroupParticipantAddActivity.this, usersList, ""+groupId,""+myGroupRole);
+                participantAddAdapter= new ParticipantAddAdapter(GroupParticipantAddActivity.this,
+                        usersList, ""+groupId,""+myGroupRole);
                 //set adapter to recyclerview
                 binding.rvUser.setAdapter(participantAddAdapter);
             }
