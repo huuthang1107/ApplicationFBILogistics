@@ -98,9 +98,7 @@ public class GroupParticipantAddActivity extends AppCompatActivity {
                     String groupIcon = ""+ds.child("groupIcon").getValue();
                     String createdBy = ""+ds.child("createdBy").getValue();
                     String timestamps = ""+ds.child("timestamp").getValue();
-
                     actionBar.setTitle("Add Participants");
-
                     ref1.child(groupId).child("Participants").child(firebaseAuth.getUid())
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -108,11 +106,9 @@ public class GroupParticipantAddActivity extends AppCompatActivity {
                                     if(snapshot.exists()){
                                         myGroupRole = ""+snapshot.child("role").getValue();
                                         actionBar.setTitle(groupTitle+"("+myGroupRole+")");
-
                                         getAllUsers();
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 
