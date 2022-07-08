@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.demoapp.R;
 import com.example.demoapp.adapter.viewPager.MyViewPagerAdapter;
 import com.example.demoapp.databinding.ActivityDashboardBinding;
-import com.example.demoapp.view.activity.LoginActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -59,6 +59,9 @@ public class DashboardActivity extends AppCompatActivity {
                         actionBar.setTitle("Chats");
                         binding.viewPager.setCurrentItem(3);
                         break;
+                    case R.id.nav_group_chat:
+                       actionBar.setTitle("Group Chats");
+                       binding.viewPager.setCurrentItem(4);
 
                 }
                 return true;
@@ -82,6 +85,9 @@ public class DashboardActivity extends AppCompatActivity {
                     case 3:
                         binding.bottomNavigation.getMenu().findItem(R.id.nav_chat).setChecked(true);
                         break;
+                    case 4:
+                        binding.bottomNavigation.getMenu().findItem(R.id.nav_group_chat).setChecked(true);
+                        break;
                 }
             }
         });
@@ -89,10 +95,41 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+//    private void showMoreOptions() {
+//        // popup menu to show more options
+//        PopupMenu popupMenu = new PopupMenu(this, binding.bottomNavigation, Gravity.END);
+//        //items to show in menu
+//        popupMenu.getMenu().add(Menu.NONE, 0,0,"Notifications");
+//        popupMenu.getMenu().add(Menu.NONE, 1, 0, "Group Chats");
+//
+//        // menu clicks
+//        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                int id = item.getItemId();
+//                if(id == 0){
+//                    // notification clicked
+//
+//                    // users fragment trasaction
+////                    actionBar.setTitle("Notification");
+////                    NotificationFragment fragment = new NotificationFragment();
+////                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+////                    transaction.replace(R.id.content, fragment, "");
+////                    transaction.commit();
+//                }else if(id == 1){
+//                    //group chats clicked
+//
+//
+//                }
+//                return false;
+//            }
+//        });
+//    }
+
 
     @Override
     protected void onResume() {
-        checkUserStatus();
+//        checkUserStatus();
         super.onResume();
     }
 
@@ -105,7 +142,7 @@ public class DashboardActivity extends AppCompatActivity {
             editor.putString("Current_USERID", mUID);
             editor.apply();
         }else{
-            startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
+            startActivity(new Intent(DashboardActivity.this, SignInActivity.class));
             finish();
         }
     }

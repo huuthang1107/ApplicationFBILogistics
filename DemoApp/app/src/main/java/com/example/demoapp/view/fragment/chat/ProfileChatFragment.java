@@ -36,8 +36,8 @@ import com.example.demoapp.R;
 import com.example.demoapp.adapter.chat.PostsAdapter;
 import com.example.demoapp.databinding.FragmentProfileChatBinding;
 import com.example.demoapp.model.Post;
-import com.example.demoapp.view.activity.LoginActivity;
 import com.example.demoapp.view.activity.chat.AddPostActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -90,6 +90,8 @@ public class ProfileChatFragment extends Fragment {
     Uri image_uri;
 
     String profileOrCoverPhoto;
+
+    public ProfileChatFragment(){}
 
 
     @Override
@@ -616,6 +618,11 @@ public class ProfileChatFragment extends Fragment {
 
         MenuItem item = menu.findItem(R.id.action_search);
 
+        //hide some option
+        menu.findItem(R.id.action_create_group).setVisible(false);
+        menu.findItem(R.id.action_add_participant).setVisible(false);
+        menu.findItem(R.id.action_groupinfo).setVisible(false);
+
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -659,6 +666,9 @@ public class ProfileChatFragment extends Fragment {
         }
         if (id == R.id.action_add_post) {
             startActivity(new Intent(getActivity(), AddPostActivity.class));
+//        }else if(id==R.id.nav_notification){
+//            // go to notificationActivity
+//            startActivity(new Intent(getActivity(), NotificationsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -668,7 +678,7 @@ public class ProfileChatFragment extends Fragment {
         if (user != null) {
             uid = user.getUid();
         } else {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            startActivity(new Intent(getActivity(), SignInActivity.class));
             getActivity().finish();
         }
     }

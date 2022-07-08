@@ -22,8 +22,8 @@ import com.example.demoapp.R;
 import com.example.demoapp.adapter.chat.PostsAdapter;
 import com.example.demoapp.databinding.FragmentHomeChatBinding;
 import com.example.demoapp.model.Post;
-import com.example.demoapp.view.activity.LoginActivity;
 import com.example.demoapp.view.activity.chat.AddPostActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +42,8 @@ public class HomeChatFragment extends Fragment {
     private FragmentHomeChatBinding binding;
     private List<Post> postList;
     private PostsAdapter postsAdapter;
+
+    public HomeChatFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,6 +145,12 @@ public class HomeChatFragment extends Fragment {
 
         // search  to search post by post by post title/ description
         MenuItem item = menu.findItem(R.id.action_search);
+
+        //hide some option
+        menu.findItem(R.id.action_create_group).setVisible(false);
+        menu.findItem(R.id.action_add_participant).setVisible(false);
+        menu.findItem(R.id.action_groupinfo).setVisible(false);
+
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
         // searchView listenner
@@ -184,6 +192,9 @@ public class HomeChatFragment extends Fragment {
         }
         if (id == R.id.action_add_post) {
             startActivity(new Intent(getActivity(), AddPostActivity.class));
+//        }else if(id==R.id.nav_notification){
+//            // go to notificationActivity
+//            startActivity(new Intent(getActivity(), NotificationsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -193,7 +204,7 @@ public class HomeChatFragment extends Fragment {
         if (user != null) {
 
         } else {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            startActivity(new Intent(getActivity(), SignInActivity.class));
             getActivity().finish();
         }
     }
