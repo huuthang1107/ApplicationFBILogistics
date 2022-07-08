@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -24,6 +25,7 @@ import com.example.demoapp.databinding.FragmentImportBinding;
 import com.example.demoapp.model.Import;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.imp.InsertImportDialog;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -64,6 +66,13 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
 
         priceListAdapter = new PriceListImportAdapter(getContext());
 
+        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
+
+        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading -> {
+            if (needLoading) {
+                onResume();
+            }
+        });
 
         setHasOptionsMenu(true);
         setAdapterItems();
@@ -180,6 +189,7 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                         Import imports = ds.getValue(Import.class);
                         // get all users except currently signed is user
                         listPriceList.add(imports);
+                        Toast.makeText(getContext(), imports.getCarrier(),Toast.LENGTH_SHORT).show();
                     }
                     sortImport(listPriceList);
 

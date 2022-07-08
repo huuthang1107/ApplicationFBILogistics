@@ -3,16 +3,8 @@
     package="com.example.demoapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".view.activity.chat.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,55 +13,13 @@
         android:theme="@style/Theme.DemoApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.activity.chat.IncommingInvitationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.chat.OutgoingInvitationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.loginAndRegister.SignInActivity"
-            android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal" />
-        <activity
-            android:name=".view.activity.air.AirActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.chat.NotificationsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.chat.GroupEditActivity"
-            android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal" />
-        <activity
-            android:name=".view.activity.chat.GroupInfoActivity"
-            android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal" />
-        <activity
-            android:name=".view.activity.chat.GroupParticipantAddActivity"
-            android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal" />
-        <activity
-            android:name=".view.activity.chat.GroupChatActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.chat.GroupCreateActivity"
-            android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal" />
-        <activity
-            android:name=".view.activity.chat.SettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.chat.PostLikedByActivity"
-            android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal" />
-        <activity
             android:name=".view.activity.chat.PostDetailActivity"
             android:exported="false"
             android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.chat.DetailProfileActivity"
-            android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal" />
+            android:exported="true"
+            android:theme="@style/Theme.GroupChatFinal"></activity>
         <activity
             android:name=".view.activity.chat.ChatActivity"
             android:exported="false" />
@@ -79,39 +29,47 @@
             android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.chat.DashboardActivity"
-            android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal" />
+            android:exported="true"
+            android:theme="@style/Theme.GroupChatFinal">
+
+        </activity>
         <activity
             android:name=".view.activity.loginAndRegister.RegisterActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.air.AirPageActivity"
-            android:exported="false" />
+            android:exported="true"></activity>
         <activity
             android:name=".view.activity.sale.waterway.WaterWayActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".view.activity.sale.road.RoadSaleActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".view.activity.sale.ImportLclSaleActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".view.activity.sale.DomImportSaleActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.imp.ProImportActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/label_import_imp"
             android:theme="@style/Theme.DemoApp.NoActionBar" />
         <activity
             android:name=".view.activity.dom.DomActivity"
-            android:exported="false"
-            android:label="@string/title_activity_dom" />
+            android:exported="true"
+            android:label="@string/title_activity_dom">
+
+        </activity>
+        <activity
+            android:name=".view.activity.pro.ProActivity"
+            android:exported="true"
+            android:label="@string/title_activity_pro_import" />
         <activity
             android:name=".view.activity.sale.rail.RailSaleActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".view.activity.sale.air.AirImportSaleActivity"
             android:exported="false" />
@@ -120,7 +78,10 @@
             android:exported="false" />
         <activity
             android:name=".view.activity.log.LogProActivity"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.air.AirActivity"
+            android:exported="true" />
         <activity
             android:name=".view.activity.sale.ImportActivity"
             android:exported="false" />
@@ -136,7 +97,9 @@
             android:theme="@style/Theme.DemoApp.NoActionBar" />
         <activity
             android:name=".view.activity.sale.SaleActivity"
-            android:exported="false" />
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".view.activity.MainActivity"
             android:exported="true">
@@ -145,22 +108,31 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".view.activity.sale.TablePriceAirActivity"
-            android:exported="false" />
-
-        <service
-            android:name=".notifications.FirebaseMessaging"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.GroupChatFinal">
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+<!--        <provider-->
+<!--            android:authorities="com.example.demoapp.fileprovider"-->
+<!--            android:name="androidx.core.content.FileProvider"-->
+<!--            android:exported="false"-->
+<!--            android:grantUriPermissions="true">-->
+<!--            <meta-data-->
+<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+<!--                android:resource="@xml/paths"-->
+<!--                />-->
+<!--        </provider>-->
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -21,6 +22,8 @@ import com.example.demoapp.databinding.ActivityContainerBinding;
 import com.example.demoapp.model.FCLModel;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.fcl.InsertFclDialog;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.viewmodel.FclViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +46,7 @@ public class ContainerActivity extends AppCompatActivity implements View.OnClick
     private List<FCLModel> listPriceList;
     private PriceListFclSaleAdapter priceListFclAdapter;
 
+    private FclViewModel mFclViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,14 @@ public class ContainerActivity extends AppCompatActivity implements View.OnClick
 
         setSupportActionBar(mContainerBinding.toolbar);
         priceListFclAdapter = new PriceListFclSaleAdapter(this);
+        mFclViewModel = new ViewModelProvider(this).get(FclViewModel.class);
+        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(this).get(CommunicateViewModel.class);
+
+        mCommunicateViewModel.needReloading.observe(this, needLoading -> {
+            if (needLoading) {
+                onResume();
+            }
+        });
 
         getAllData();
         setAdapterItems();
@@ -170,6 +182,7 @@ public class ContainerActivity extends AppCompatActivity implements View.OnClick
                     FCLModel fcl = ds.getValue(FCLModel.class);
                     // get all users except currently signed is user
                     listPriceList.add(fcl);
+                    Toast.makeText(ContainerActivity.this, fcl.getNote2(),Toast.LENGTH_SHORT).show();
                 }
 
             }

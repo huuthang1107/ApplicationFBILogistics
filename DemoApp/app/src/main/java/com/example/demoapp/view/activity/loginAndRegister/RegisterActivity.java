@@ -12,6 +12,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.demoapp.databinding.ActivityRegisterBinding;
+import com.example.demoapp.view.activity.LoginActivity;
 import com.example.demoapp.view.activity.chat.DashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("FBI Logistics");
+        actionBar.setTitle("Create Account");
         // enable back button
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -46,7 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Registering User...");
 
-        binding.tvSignUp.setOnClickListener(new View.OnClickListener() {
+        binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = binding.etEmail.getText().toString().trim();
@@ -67,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
         binding.tvHaveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(RegisterActivity.this, SignInActivity.class));
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                 finish();
             }
         });
@@ -99,8 +100,8 @@ public class RegisterActivity extends AppCompatActivity {
                             hashMap.put("phone", "");
                             hashMap.put("image", "");
                             hashMap.put("cover", "");
+                            hashMap.put("tokensNotification", "");
                             hashMap.put("position","");
-                            hashMap.put("FCM","");
                             // Firebase database isntance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             // path to store user data name "Users"

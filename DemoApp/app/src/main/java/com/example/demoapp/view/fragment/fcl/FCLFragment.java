@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -24,6 +25,7 @@ import com.example.demoapp.databinding.FragmentFclBinding;
 import com.example.demoapp.model.FCLModel;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.fcl.InsertFclDialog;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -67,6 +69,13 @@ public class FCLFragment extends Fragment implements View.OnClickListener {
 
         priceListFclAdapter = new PriceListFclAdapter(getContext());
 
+        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
+
+        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading -> {
+            if (needLoading) {
+                onResume();
+            }
+        });
 
         setHasOptionsMenu(true);
         getAllDataFCL();
@@ -184,6 +193,7 @@ public class FCLFragment extends Fragment implements View.OnClickListener {
                     FCLModel fcl = ds.getValue(FCLModel.class);
                     // get all users except currently signed is user
                         listPriceList.add(fcl);
+                        Toast.makeText(getContext(), fcl.getNote2(),Toast.LENGTH_SHORT).show();
                 }
                 sortArray(listPriceList);
 

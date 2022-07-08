@@ -27,6 +27,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
@@ -50,11 +53,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         View view;
         if (viewType == MSG_TYPE_RIGHT) {
             view = LayoutInflater.from(context).inflate(R.layout.row_chat_right, parent, false);
-            return new ChatViewHolder(view);
         } else {
             view = LayoutInflater.from(context).inflate(R.layout.row_chat_left, parent, false);
-            return new ChatViewHolder(view);
         }
+        return new ChatViewHolder(view);
     }
 
     @SuppressLint("RecyclerView")
@@ -62,25 +64,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull ChatViewHolder holder,  int position) {
         // get data
         String message = chatsList.get(position).getMessage();
-        String type = chatsList.get(position).getType();
-        String date = chatsList.get(position).getTimemessage();
 
-
-        if(type.equals("text")){
-            // text message
-            holder.tvMessage.setVisibility(View.VISIBLE);
-            holder.ivMessage.setVisibility(View.GONE);
-            holder.tvMessage.setText(message);
-        }else{
-            //image message
-            holder.ivMessage.setVisibility(View.VISIBLE);
-            holder.tvMessage.setVisibility(View.GONE);
-            try {
-                Picasso.get().load(message).placeholder(R.drawable.ic_image_black).into(holder.ivMessage);
-            }catch (Exception e){
-                holder.ivMessage.setImageResource(R.drawable.ic_image_black);
-            }
-        }
+        // convert time stamp to dd//mm/YYYY hh:mm am/pm
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
+        String date = df.format(Calendar.getInstance().getTime());
 
         // set data
         holder.tvMessage.setText(message);
@@ -121,7 +108,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         if (position == chatsList.size() - 1) {
             if (chatsList.get(position).getIsSeen().equals("1")) {
                 holder.tvIsSeen.setText("Seen");
-            } else {
+            } else if (chatsList.get(position).getIsSeen().equals("2")) {
                 holder.tvIsSeen.setText("Delivere");
             }
         } else {
@@ -187,8 +174,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     @Override
     public int getItemViewType(int position) {
-//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (chatsList.get(position).getSender().equals(FirebaseAuth.getInstance().getUid())) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (chatsList.get(position).getSender().equals(firebaseUser.getUid())) {
             return MSG_TYPE_RIGHT;
         } else {
             return MSG_TYPE_LEFT;
@@ -198,7 +185,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     // chat view holder class
     class ChatViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView ivProfile, ivMessage;
+        ImageView ivProfile;
         TextView tvMessage, tvTime, tvIsSeen;
         LinearLayout messageLayout;
 
@@ -206,7 +193,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             super(itemView);
 
             ivProfile = itemView.findViewById(R.id.profile_image);
-            ivMessage = itemView.findViewById(R.id.messageIv);
             tvMessage = itemView.findViewById(R.id.tv_message);
             tvTime = itemView.findViewById(R.id.tv_time);
             tvIsSeen = itemView.findViewById(R.id.tv_isSeen);

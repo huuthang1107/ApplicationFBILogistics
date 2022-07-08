@@ -17,7 +17,7 @@ import com.example.demoapp.R;
 import com.example.demoapp.adapter.chat.PostsAdapter;
 import com.example.demoapp.databinding.ActivityDetailProfileBinding;
 import com.example.demoapp.model.Post;
-import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
+import com.example.demoapp.view.activity.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -185,8 +185,6 @@ public class DetailProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_add_post).setVisible(false);
-        menu.findItem(R.id.action_create_group).setVisible(false);
         MenuItem item = menu.findItem(R.id.action_search);
 
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
@@ -235,7 +233,7 @@ public class DetailProfileActivity extends AppCompatActivity {
         if(user != null){
             uid =  user.getUid();
         }else{
-            startActivity(new Intent(this, SignInActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
     }

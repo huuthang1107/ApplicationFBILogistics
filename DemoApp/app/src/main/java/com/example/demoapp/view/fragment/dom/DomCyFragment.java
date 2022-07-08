@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -22,6 +23,8 @@ import com.example.demoapp.databinding.FragmentDomCyBinding;
 import com.example.demoapp.model.DomCy;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.dom.dom_cy.DialogDomCyInsert;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.viewmodel.DomCyViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +39,7 @@ import java.util.List;
 public class DomCyFragment extends Fragment {
 
     private FragmentDomCyBinding binding;
+    private DomCyViewModel mDomCyViewModel;
     private CyDomAdapter mCyDomAdapter;
     private SearchView searchView;
 
@@ -52,6 +56,15 @@ public class DomCyFragment extends Fragment {
         View view = binding.getRoot();
 
         mCyDomAdapter = new CyDomAdapter(getContext());
+        mDomCyViewModel = new ViewModelProvider(this).get(DomCyViewModel.class);
+
+        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
+
+        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading -> {
+            if (needLoading) {
+                onResume();
+            }
+        });
 
         setHasOptionsMenu(true);
         getAllData();
@@ -158,6 +171,8 @@ public class DomCyFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        mDomCyViewModel.getAllData().observe(getViewLifecycleOwner(), domCy -> mCyDomAdapter.setDomCy(filterDataResume(month, continent, domCy)));
 
         binding.rcvDomCy.setAdapter(mCyDomAdapter);
     }

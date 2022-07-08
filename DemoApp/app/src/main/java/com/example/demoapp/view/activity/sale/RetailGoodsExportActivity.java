@@ -3,6 +3,7 @@ package com.example.demoapp.view.activity.sale;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -19,6 +21,8 @@ import com.example.demoapp.adapter.sale.PriceListRetailGoodsSaleAdapter;
 import com.example.demoapp.databinding.ActivityRetailGoodsExportBinding;
 import com.example.demoapp.model.RetailGoods;
 import com.example.demoapp.utilities.Constants;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.viewmodel.RetailGoodsViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +39,7 @@ public class RetailGoodsExportActivity extends AppCompatActivity {
     private String month = "";
     private String continent = "";
     private PriceListRetailGoodsSaleAdapter mPriceListRetailGoddsAdapter;
+    private RetailGoodsViewModel mRetailGoodsViewModel;
     private List<RetailGoods> retailGoodsList = new ArrayList<>();
     private SearchView searchView;
     @Override
@@ -45,6 +50,14 @@ public class RetailGoodsExportActivity extends AppCompatActivity {
 
         setSupportActionBar(mBinding.toolbar);
         mPriceListRetailGoddsAdapter = new PriceListRetailGoodsSaleAdapter(this);
+        mRetailGoodsViewModel = new ViewModelProvider(this).get(RetailGoodsViewModel.class);
+        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(this).get(CommunicateViewModel.class);
+        mCommunicateViewModel.needReloading.observe(this, needLoading ->{
+            if(needLoading){
+                Log.d("onresume", String.valueOf(needLoading.toString()));
+                onResume();
+            }
+        });
         getDataRetailGoods();
         setAdapterItems();
         setContentView(view);
@@ -113,6 +126,7 @@ public class RetailGoodsExportActivity extends AppCompatActivity {
                         RetailGoods retailGoods = ds.getValue(RetailGoods.class);
                         // get all users except currently signed is user
                         retailGoodsList.add(retailGoods);
+                        Toast.makeText(RetailGoodsExportActivity.this, retailGoods.getValid(), Toast.LENGTH_SHORT).show();
                     }
                     sortRetailGoods(retailGoodsList);
 
@@ -153,6 +167,9 @@ public class RetailGoodsExportActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        mRetailGoodsViewModel.getRetailGoodsList().observe(this, retailGoods ->{
+            mPriceListRetailGoddsAdapter.setDataRetailGoods(preparedataForResume(month,continent, retailGoods));
+        });
         mBinding.priceListRcvRetail.setAdapter(mPriceListRetailGoddsAdapter);
     }
     @Override
