@@ -76,13 +76,13 @@ public class UsersChatFragment extends Fragment {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Users users = ds.getValue(Users.class);
                     // get all users except currently signed is user
-                    try{
-                        if (!users.getUid().equals(firebaseUser.getUid())) {
-                            usersList.add(users);
-                        }
-                    }catch (Exception e){
+                   try{
+                       if (!users.getUid().equals(firebaseUser.getUid())) {
+                           usersList.add(users);
+                       }
+                   }catch (Exception e){
 
-                    }
+                   }
                     // adapter
                     userAdapter = new UserAdapter(getActivity(), usersList);
                     // set adapter to recycle view

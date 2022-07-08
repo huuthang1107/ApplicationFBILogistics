@@ -1,6 +1,7 @@
 package com.example.demoapp.view.activity.chat;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -61,18 +62,18 @@ public class GroupParticipantAddActivity extends AppCompatActivity {
                     Users users = ds.getValue(Users.class);
 
                     //get all user accept current ly signed in
-                   try {
+                   try{
                        if(!firebaseAuth.getUid().equals(users.getUid())){
                            // not my uid
                            usersList.add(users);
+                           Toast.makeText(getApplicationContext(),users.getUid(), Toast.LENGTH_SHORT).show();
                        }
                    }catch (Exception e){
 
                    }
                 }
                 //setup adapter
-                participantAddAdapter= new ParticipantAddAdapter(GroupParticipantAddActivity.this,
-                        usersList, ""+groupId,""+myGroupRole);
+                participantAddAdapter= new ParticipantAddAdapter(GroupParticipantAddActivity.this, usersList, ""+groupId,""+myGroupRole);
                 //set adapter to recyclerview
                 binding.rvUser.setAdapter(participantAddAdapter);
             }
@@ -98,7 +99,9 @@ public class GroupParticipantAddActivity extends AppCompatActivity {
                     String groupIcon = ""+ds.child("groupIcon").getValue();
                     String createdBy = ""+ds.child("createdBy").getValue();
                     String timestamps = ""+ds.child("timestamp").getValue();
+
                     actionBar.setTitle("Add Participants");
+
                     ref1.child(groupId).child("Participants").child(firebaseAuth.getUid())
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -106,9 +109,11 @@ public class GroupParticipantAddActivity extends AppCompatActivity {
                                     if(snapshot.exists()){
                                         myGroupRole = ""+snapshot.child("role").getValue();
                                         actionBar.setTitle(groupTitle+"("+myGroupRole+")");
+
                                         getAllUsers();
                                     }
                                 }
+
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 
