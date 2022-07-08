@@ -1,10 +1,10 @@
-package com.example.demoapp.utilities;
+package com.example.demoapp.Network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ApiClient {
-    //URL of Restful API
+
     private static Retrofit retrofit = null;
 
 
@@ -14,7 +14,7 @@ public class ApiClient {
         if(retrofit == null)
         {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("https://fcm.googleapis.com/fcm/")
+                        .baseUrl("https://fcm.googleapis.com/fcm/")
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build();
         }
